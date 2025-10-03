@@ -1,0 +1,19 @@
+# venv & Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# VS Code – tillåt bara settings.json
+.vscode/*
+!.vscode/settings.json
+
+# Jupyter-rester
+.ipynb_checkpoints/
+
+# Artefakter (justera vid behov)
+*.png
+*.log
+
+.DS_Store
+Thumbs.db
