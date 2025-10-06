@@ -1,10 +1,11 @@
 # kommentarer på svenska, koden på engelska.
 # importera matplotlib för plotting av frekvens graf som används som exempel i lab 1
+import matplotlib.pyplot as plt
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 path = HERE / "data" / "dna_raw.txt"
-
+# FASTA parsing i "mikro" format
 # with open(som vi fick lära oss i skolan) utf-8 för att hantera speciella tecken
 with open(path, encoding="utf-8") as f:
     # läs filen, strip() tar bort extra whitespace till höger och vänster
@@ -20,9 +21,8 @@ for block in blocks:
     lines = []  # <--- tom lista
 
     for line in raw_lines:  # för line i raw_lines
-        sq = (
-            line.strip()
-        )  # tar bort whitespace i början/slutet på just denna rad (line.strip())
+        # tar bort whitespace i början/slutet på just denna rad (line.strip())
+        sq = line.strip()
         if sq:  # behåll bara rader som INTE är tomma
             lines.append(sq)  # append till lines
     # VAKT Om lines är tom, får jag DIREKT ett error i form av IndexError denna rad skyddar mot error
@@ -31,15 +31,12 @@ for block in blocks:
         continue
     # id och sekvens
     sequence_id = lines[0]  # första raden = header/ID (inte en tom lista)
-    sequence = (
-        ""  # starta tom sträng och bygger upp sekvensen genom att lägga till varje rad
-    )
-    # för line i lines, hoppa över första raden (headern), resten är sekvensrader
+    sequence = ""
+    # för row i lines, hoppa över första raden (headern), resten är sekvensrader
     for line in lines[1:]:
         sequence += line  # sequence + tom rad
-    sequence = (
-        sequence.lower()
-    )  # variabeln = variabel.lower(gör allt till små bokstäver)
+    # variabeln = variabel.lower(gör allt till små bokstäver)
+    sequence = sequence.lower()
     sequence = sequence.replace(" ", "")  # tar bort mellanslag inne i sekvens
 
     # räkna
@@ -55,3 +52,14 @@ for block in blocks:
             others += 1  # +1 i others så som n i dna_raw.txt
 
     print(sequence_id, counts, f"(Other values: {others})")
+
+    # GLÖM EJ BORT INDENTERING FÖR PLOT! Glömmer du bort den så visas ENDAST seq 4 då den är utanför loopen!
+    letters = ["a", "t", "c", "g"]
+    values = [counts[b] for b in letters]
+    plt.figure()
+    plt.bar(range(len(letters)), values)
+    plt.xticks(range(len(letters)), letters)
+    plt.xlabel("DNA letters")
+    plt.ylabel("Frequency")
+    plt.title(sequence_id)
+    plt.show()
