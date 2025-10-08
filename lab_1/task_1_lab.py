@@ -22,9 +22,10 @@ for block in blocks:
 
     for line in raw_lines:  # för line i raw_lines
         # tar bort whitespace i början/slutet på just denna rad (line.strip())
-        sq = line.strip()
-        if sq:  # behåll bara rader som INTE är tomma
-            lines.append(sq)  # append till lines
+        # bytt ut sq = line..... till stripped_line = line.strip() för tydlighet.
+        stripped_line = line.strip()
+        if stripped_line:  # behåll bara rader som INTE är tomma
+            lines.append(stripped_line)  # append till lines
     # VAKT Om lines är tom, får jag DIREKT ett error i form av IndexError denna rad skyddar mot error
     if not lines:
         # se kommentar ovan. Detta är enbart för att skydda mot error
@@ -34,7 +35,7 @@ for block in blocks:
     sequence = ""
     # för row i lines, hoppa över första raden (headern), resten är sekvensrader
     for line in lines[1:]:
-        sequence += line  # sequence + tom rad
+        sequence += line  # lägg till sekvensraden (inte tom rad!)
     # variabeln = variabel.lower(gör allt till små bokstäver)
     sequence = sequence.lower()
     sequence = sequence.replace(" ", "")  # tar bort mellanslag inne i sekvens
