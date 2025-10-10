@@ -1,66 +1,84 @@
 # kommentarer på svenska, koden på engelska.
-# importera matplotlib för plotting av frekvens graf som används som exempel i lab 1
+
+# Vad: Läs FASTA-liknande DNA, räkna A/T/C/G per sekvens och plotta
+# Varför: Uppfyller Lab 1 Task 1 (case-insensitiv, dict + graf). Fungerar även på "complicated"
+# Hur: Läs -> split på '>' -> rensa -> id = första raden, sequence = join(rest).lower() -> Counter + plot
+
+
+# Steg 1 - Importer
+# Varför: Jag vill räkna bokstäver enkelt (Counter) och kunna plotta (matplotlib)
 import matplotlib.pyplot as plt
+from collections import Counter
+
+# för robust path hantering (fil i \data mapp, inte i root mappen)
 from pathlib import Path
 
+# Steg 2 - Filväg
+# Varför: Jag säger var filen finns då .txt filerna finns i annan mapp \data och ej i root
 HERE = Path(__file__).resolve().parent
+# av-kommentera/kommentera path = HERE / "data" / "dna_raw.txt" om du vill köra dna_raw.txt
 path = HERE / "data" / "dna_raw.txt"
-# FASTA parsing i "mikro" format
+# av-kommentera/kommentera path = HERE / "data" / "dna_raw_complicated.txt" om du vill köra dna_raw_complicated.txt
+# path = HERE / "data" / "dna_raw_complicated.txt"
+
+# Steg 2.5 - Signatur färg
+BAR_COLOR = "purple"
+
+
+# Steg 3 - Läs rådata
+# Varför: Jag läser in hela filen till EN sträng och städar bort extra whitespace i början/slutet
 # with open(som vi fick lära oss i skolan) utf-8 för att hantera speciella tecken
 with open(path, encoding="utf-8") as f:
-    # läs filen, strip() tar bort extra whitespace till höger och vänster
     data = f.read().strip()
 
-# dela upp i block
-# dela upp string vid varje > (resultatet, en list)
-blocks = data.split(">")[1:]  # [1:] = skippa första elementet
+# Steg 4 - Dela i poster med >
+# Varför: med FASTA parsing börjar varje post med >
+# Split (">") delar på varje >. Första elementet är tomt, därför [1:]
+for block in data.split(">")[1:]:
 
-for block in blocks:
-    # rensa rader, dela till rader, trimma whitespace <---> och släng tomrader
-    raw_lines = block.splitlines()  # delar upp block i rader, splitta på nya rader (\n)
-    lines = []  # <--- tom lista
+    # Steg 5 - Rensa rader i blocket
+    # Varför: Jag vill ha en ren lista av rader utan tomma rader/extra whitespace
+    lines = [line.strip() for line in block.splitlines() if line.strip()]
+    # splitlines() delar på radbrytningar(\n) och strip() tar bort whitespace till höger och vänster
+    # if line.strip slänger tomma rader (sant om inte tom rad efter strip)
 
-    for line in raw_lines:  # för line i raw_lines
-        # tar bort whitespace i början/slutet på just denna rad (line.strip())
-        # bytt ut sq = line..... till stripped_line = line.strip() för tydlighet.
-        stripped_line = line.strip()
-        if stripped_line:  # behåll bara rader som INTE är tomma
-            lines.append(stripped_line)  # append till lines
-    # VAKT Om lines är tom, får jag DIREKT ett error i form av IndexError denna rad skyddar mot error
+    # VAKT - om lines är tom, får jag direkt ett error(IndexError) denna rad skyddar mot error
     if not lines:
         # se kommentar ovan. Detta är enbart för att skydda mot error
         continue
-    # id och sekvens
-    sequence_id = lines[0]  # första raden = header/ID (inte en tom lista)
-    sequence = ""
-    # för row i lines, hoppa över första raden (headern), resten är sekvensrader
-    for line in lines[1:]:
-        sequence += line  # lägg till sekvensraden (inte tom rad!)
-    # variabeln = variabel.lower(gör allt till små bokstäver)
-    sequence = sequence.lower()
-    sequence = sequence.replace(" ", "")  # tar bort mellanslag inne i sekvens
 
-    # räkna
-    # dict med varje key och value som 0
-    counts = {"a": 0, "t": 0, "c": 0, "g": 0}
-    # others = 0 (others är N i dna_raw.txt, alla characters som inte är a,t,c,g räknas som others)
-    others = 0
+    # Steg 6 - Plocka ID och bygg sekvens
+    # Varför: Första raden är mitt ID. Resten av raderna = sekvensen, ihopsatta och till gemener
+    sequence_id = lines[0]
+    # Join sätter/slår ihop rader utan \n. .lower() gör allt till små bokstäver
+    sequence = "".join(lines[1:]).lower()
+    # Tar bort ALLA whitespace(space, tab etc) immun mot "skräp" i filer och behöver ej oroa mig.
+    sequence = "".join(sequence.split())
 
-    for characters in sequence:  # för characters i sequence under id och sekvens
-        if characters in counts:  # om characters finns i count dict'en
-            counts[characters] += 1  # öka value hos den key'n med 1 i dict'en
-        else:  # annars
-            others += 1  # +1 i others så som n i dna_raw.txt
+    # Steg 7 - Räkna med Counter
+    # Varför: Snabbt sätt att få frekvens per bokstav (bättre än manuell loop för större data)
+    count = Counter(character for character in sequence if character in "atcg")
+    # Counter funktionen räknar ENDAST a,t,c,g. Ingenting annat (filtrerar bort others via if)
 
-    print(sequence_id, counts, f"(Other values: {others})")
+    # Steg 8 - Säkerställ nycklar + räkna övriga
+    # Varför: Jag vill ALLTID ha fyra nycklar(keys) a,t,c,g även om någon är 0
+    # Jag vill även veta hur många tecken som är others.
+    counts = {b: count.get(b, 0) for b in "atcg"}
+    # Snabbt sätt, total längd MINUS summan av counts(ingen extra loop)
+    # Snabbare än sum(1 for....) då jag redan använder räknande med counts
+    others = len(sequence) - sum(counts.values())
+
+    # Steg 9 - Slutgiltig utskrift
+    print(sequence_id, counts, f"(Others: {others})")
 
     # GLÖM EJ BORT INDENTERING FÖR PLOT! Glömmer du bort den så visas ENDAST seq 4 då den är utanför loopen!
     letters = ["a", "t", "c", "g"]
     values = [counts[b] for b in letters]
     plt.figure()
-    plt.bar(range(len(letters)), values)
+    plt.bar(range(len(letters)), values, color=BAR_COLOR)
     plt.xticks(range(len(letters)), letters)
     plt.xlabel("DNA letters")
     plt.ylabel("Frequency")
-    plt.title(sequence_id)
+    # Titel på plott om vilken sekvens som visas + totala längden på sekvensen
+    plt.title(f"{sequence_id} (n={len(sequence)})")
     plt.show()
