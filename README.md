@@ -7,9 +7,7 @@ Kod körs som `.py` (ingen Jupyter). Virtuell miljö `.venv` används för renar
 - [Syfte](#syfte)
 - [Miljö & versioner](#miljö--versioner)
 - [Snabbstart](#snabbstart)
-- [Köra labbar](#köra-labbar)
 - [Struktur](#struktur)
-- [Licens](#licens)
 
 ## Syfte
 - En mapp per lab, kod i `.py`.
@@ -29,4 +27,13 @@ py -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
+```
 
+## Struktur
+## Struktur
+- `lab_1/` och `lab_2/` ligger i separata mappar i repot.
+- Varje labb-mapp innehåller:
+  - `data/` med relevanta filer (t.ex. `dna_raw.txt`, PDF med uppgiftstext).
+  - Python-skript (`.py`) som löser uppgifterna.
+  - `notes.md` med källor och vad jag fått hjälp med (radintervall + länk).
+- Kod körs som `.py` (ingen Jupyter).
