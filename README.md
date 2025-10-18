@@ -18,7 +18,7 @@ Kod körs som `.py` (ingen Jupyter). Virtuell miljö `.venv` används för renar
 - Källor/anteckningar i `lab_X/notes.md`.
 
 ## Miljö & versioner
-- **Python:** 3.12.x (ange exakt om du vill)  
+- **Python:** 3.12.x  
 - **Paket:** se `requirements.txt` (genereras med `pip freeze`).  
 - VS Code pekar på `.venv` via `.vscode/settings.json`.
 
@@ -51,3 +51,4 @@ seq1 {'a': 17, 't': 7, 'c': 8, 'g': 2} (Others: 0)
 seq2 {'a': 3,  't': 7, 'c': 4, 'g':10} (Others: 0)
 seq3 {'a':36, 't':19, 'c':34, 'g':21} (Others: 2)
 seq4 {'a':17, 't':12, 'c':15, 'g':20} (Others: 0)
+
