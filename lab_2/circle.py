@@ -5,8 +5,9 @@
 import math
 
 # Decorator. Functools för att slippa upprepa mig själv med operator overloads.
+# @total_ordering gör att jag enbart behöver skriva __eq__ + __lt__ (Lika med + mindre än)
+# Python skapar automatiskt __le__, __gt__, __ge__ ifrån __eq__ + __lt__ med denna decorator
 # Följer DRY konceptet extra mycket tack vare denna decorator.
-# total_ordering gör att jag enbart behöver skriva __eq__ + __lt__ (Lika med + mindre än)
 from functools import total_ordering
 from shape import Shape
 
@@ -14,19 +15,24 @@ from shape import Shape
 @total_ordering
 class Circle(Shape):
     """Circle defined by center x, y and radius > 0.
+
+    Inherits center position (x, y) from Shape.
+
     Attributes:
-    x (float) center for X-coordinate.
-    y (float) center for Y-coordinate.
+    radius (float): Circle radius(MUST be positive)
     """
 
     def __init__(self, x: float | int, y: float | int, radius: float | int) -> None:
-        """Validate and set the center and radius.
-        Arguments:
-        x (float) center X.
-        y (float) center Y.
+        """Initialize a circle with center and radius.
 
-        Raises: TypeEror if any argument is not a number.
-        Raises: ValueError if radius <= 0.
+        Args:
+        x (float | int) X-coordinate of center.
+        y (float | int) Y-coordinate of center.
+        radius (float | int) Circle radius(MUST be positive)
+
+        Raises:
+        TypeError: If any argument is not numeric.
+        ValueError: If radius <= 0.
         """
         super().__init__(x, y)
         if not isinstance(radius, (int, float)):
@@ -37,17 +43,32 @@ class Circle(Shape):
 
     @property
     def area(self):
-        """Calculates the area of the circle (Pi * r2)"""
+        """The area of the circle (Pi * r²)
+
+        Returns:
+            Float: Area in square units.
+        """
         return math.pi * self.radius**2
 
     @property
     def perimeter(self):
-        """Calculates the perimeter of the circle (2*Pi*r)"""
+        """The perimeter of the circle (2Pi*r)
+
+        Returns:
+            float: Perimiter in linear units.
+        """
         return 2 * math.pi * self.radius
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
+        """Check equality based on radius (within float tolerance)
+
+        Args:
+            other: Object to compare with.
+        Returns:
+            boolean: True if other is a circle with the same radius.
+        """
         return isinstance(other, Circle) and math.isclose(self.radius, other.radius)
-        # .isclose går att använda tack vare import math. .isclose passar bra att använda om jag jobbar med floats.
+        # .isclose går att använda tack vare import math. .isclose passar perfekt att använda om jag jobbar med floats.
 
     def __lt__(self, other):
         return self.area < other.area if hasattr(other, "area") else NotImplemented
@@ -56,12 +77,19 @@ class Circle(Shape):
 
     def is_unit_circle(self):
         """Checks if circle is a unit circle.
-        Returns True if radius is approximately 1.0
+        Returns:
+            boolean: True if radius is approximately 1.0
         """
         return math.isclose(self.radius, 1.0)
 
     def __repr__(self):
+        """Developer-friendly representation (recreatable)."""
         return f"Circle(x={self.x}, y={self.y}, radius={self.radius})"
 
     def __str__(self):
+        """User-friendly string representation.
+
+        Returns:
+            str: Human-readable description of the circle.
+        """
         return f"Circle at ({self.x}, {self.y}) r={self.radius}"
