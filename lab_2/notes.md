@@ -6,3 +6,7 @@
 
 
 #### Källor
+**TODO - Fylla exakta videos med länk och/eller timestamps på långa videos** 
+* circle.py - Decorators - Corey + Bro codez
+* circle.py - hasattr(has attribute) https://www.w3schools.com/python/ref_func_hasattr.asp + Corey
+* circle.py - Import av math -> kan använda isclose pga jobbar med floats. 
