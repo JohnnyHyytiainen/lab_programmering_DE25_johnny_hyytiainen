@@ -15,8 +15,8 @@ class Shape(ABC):
     An abstract base class for a geometric shape with a center position.
 
     Attributes:
-        x (float) X-coordinate of the shapes center.
-        y (float) Y-coordinate of the shapes center.
+        x (float): X-coordinate of the shapes center.
+        y (float): Y-coordinate of the shapes center.
 
     Invariants:
         x and y are finite real numbers.
@@ -25,20 +25,31 @@ class Shape(ABC):
     # Validera typer och normalisera till float för aritmetik
 
     def __init__(self, x, y):
+        """
+        Initialize a shape with center coordinates.
+
+        Args:
+            x (float | int): X-coordinate of center.
+            y (float | int): Y-coordinate of center.
+
+        Raises:
+            TypeError: If x or y is not numeric.
+        """
         if not isinstance(x, (int, float)):
-            raise TypeError("x must be a number, not {type(x).__name__}")
+            raise TypeError(f"x must be a number, not {type(x).__name__}")
         if not isinstance(y, (int, float)):
-            raise TypeError("y must be a number, not {type(y).__name__}")
+            raise TypeError(f"y must be a number, not {type(y).__name__}")
         # Alltid lagra som float för konsekvent datatyp
         self.x = float(x)
         self.y = float(y)
 
     def translate(self, dx: float | int, dy: float | int) -> None:
-        """Move the shapes center by (dx, dy)
+        """
+        Move the shapes center by (dx, dy)
 
         Args:
-            dx (float or int) The distance to move along the x axis.
-            dy (float or int) The distance to move along the y axis.
+            dx (float | int) The distance to move along the x-axis.
+            dy (float | int) The distance to move along the y-axis.
 
         Raises:
             TypeError: If dx or dy are not numeric.
@@ -52,11 +63,20 @@ class Shape(ABC):
     @property
     @abstractmethod
     def area(self) -> float:
-        """Read only geometric area of the shape"""
+        """
+        Read only property: The geometric area of the shape.
+        Returns:
+            float: Area in square units.
+
+        """
         raise NotImplementedError
 
     @property
     @abstractmethod
     def perimeter(self) -> float:
-        """Read only perimeter/circumference of the shape"""
+        """
+        Read only property: The perimeter/circumference of the shape.
+        Returns:
+            float: Perimiter in linear units.
+        """
         raise NotImplementedError
