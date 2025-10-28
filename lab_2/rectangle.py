@@ -53,16 +53,24 @@ class Rectangle(Shape):
         self.width = float(width)
         self.height = float(height)
 
+    # @property decorator istället för att använda mig utav getter funktion för Shape3D
+    # @property gör mina värden read-only
+    # Följa DRY konceptet
     @property
     def area(self):
         """Read only property. The area of the rectangle (width*height)."""
         return self.width * self.height
 
+    # @property decorator istället för att använda mig utav getter funktion för Shape3D
+    # @property gör mina värden read-only
+    # Följa DRY konceptet
     @property
     def perimeter(self):
         """Read only property: The perimeter of the rectangle 2*(width + height)."""
         return 2 * (self.width + self.height)
 
+    # Två operators behövs för att total_ordering decoratorn ska bli användbar == DRY
+    # (__eq__ + __lt__ behövs för detta. Lika med + mindre än)
     def __eq__(self, other: object) -> bool:
         """
         Checks for equality with another object.
@@ -84,6 +92,8 @@ class Rectangle(Shape):
         )
         # .isclose går att använda tack vare import math. .isclose passar perfekt att använda om jag jobbar med floats.
 
+    # Två operators behövs för att total_ordering decoratorn ska bli användbar == DRY
+    # (__eq__ + __lt__ behövs för detta. Lika med + mindre än)
     def __lt__(self, other: object) -> bool:
         """Compares this rectangle to another shape based on area."""
         return self.area < other.area if hasattr(other, "area") else NotImplemented

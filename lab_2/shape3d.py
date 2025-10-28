@@ -58,12 +58,18 @@ class Shape3D(ABC):
         self.y += float(dy)
         self.z += float(dz)
 
+    # @property decorator istället för att använda mig utav getter funktion för Shape3D
+    # @property gör mina värden read-only
+    # Följa DRY konceptet
     @property
     @abstractmethod
     def volume(self) -> float:
         """Read only property: The volume of the 3D shape."""
         raise NotImplementedError
 
+    # @property decorator istället för att använda mig utav getter funktion för Shape3D
+    # @property gör mina värden read-only
+    # Följa DRY konceptet
     @property
     @abstractmethod
     def surface_area(self) -> float:

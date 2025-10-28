@@ -65,6 +65,9 @@ class Shape(ABC):
         self.x += float(dx)
         self.y += float(dy)
 
+    # @property decorator istället för att använda mig utav getter funktion för Shape3D
+    # @property gör mina värden read-only
+    # Följa DRY konceptet
     @property
     @abstractmethod
     def area(self) -> float:
@@ -76,6 +79,9 @@ class Shape(ABC):
         """
         raise NotImplementedError
 
+    # @property decorator istället för att använda mig utav getter funktion för Shape3D
+    # @property gör mina värden read-only
+    # Följa DRY konceptet
     @property
     @abstractmethod
     def perimeter(self) -> float:

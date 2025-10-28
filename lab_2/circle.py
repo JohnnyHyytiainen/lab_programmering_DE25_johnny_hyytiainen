@@ -41,6 +41,9 @@ class Circle(Shape):
             raise ValueError("radius must be > 0")
         self.radius = float(radius)
 
+    # @property decorator istället för att använda mig utav getter funktion för Shape3D
+    # @property gör mina värden read-only
+    # Följa DRY konceptet
     @property
     def area(self):
         """The area of the circle (Pi * r²)
@@ -50,6 +53,9 @@ class Circle(Shape):
         """
         return math.pi * self.radius**2
 
+    # @property decorator istället för att använda mig utav getter funktion för Shape3D
+    # @property gör mina värden read-only
+    # Följa DRY konceptet
     @property
     def perimeter(self):
         """The perimeter of the circle (2Pi*r)
@@ -59,6 +65,8 @@ class Circle(Shape):
         """
         return 2 * math.pi * self.radius
 
+    # Två operators behövs för att total_ordering decoratorn ska bli användbar == DRY
+    # (__eq__ + __lt__ behövs för detta. Lika med + mindre än)
     def __eq__(self, other: object) -> bool:
         """Check equality based on radius (within float tolerance)
 
@@ -70,6 +78,8 @@ class Circle(Shape):
         return isinstance(other, Circle) and math.isclose(self.radius, other.radius)
         # .isclose går att använda tack vare import math. .isclose passar perfekt att använda om jag jobbar med floats.
 
+    # Två operators behövs för att total_ordering decoratorn ska bli användbar == DRY
+    # (__eq__ + __lt__ behövs för detta. Lika med + mindre än)
     def __lt__(self, other):
         return self.area < other.area if hasattr(other, "area") else NotImplemented
         # hasattr = inbyggd funktion för att kolla om objekt har en specifik attribut/metod och ger True om dom finns annars False.
