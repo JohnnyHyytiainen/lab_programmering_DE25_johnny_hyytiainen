@@ -102,6 +102,6 @@ class Rectangle(Shape):
         """User-friendly string representation.
 
         Returns:
-            str: Human-readable description of the circle.
+            str: Human-readable description of the rectangle.
         """
         return f"Rectangle at ({self.x}, {self.y}) {self.width}×{self.height}"
