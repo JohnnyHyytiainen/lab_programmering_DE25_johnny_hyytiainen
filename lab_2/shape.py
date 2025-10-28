@@ -7,6 +7,9 @@
 Provides the contract for read-only 'area' and 'perimeter' properties.
 """
 
+
+# abc = standard bibliotek, ABC = basklass, abstractmethod = decorator
+# @abstractmethod "tvingar" child klasserna att använda samma method. Gör det för att få alla child klasser att följa samma regler
 from abc import ABC, abstractmethod
 
 
@@ -36,8 +39,10 @@ class Shape(ABC):
             TypeError: If x or y is not numeric.
         """
         if not isinstance(x, (int, float)):
+            # TypeError "vakt" om x inte är ett giltigt värde, som en string
             raise TypeError(f"x must be a number, not {type(x).__name__}")
         if not isinstance(y, (int, float)):
+            # TypeError "vakt" om y inte är ett giltigt värde, som en string
             raise TypeError(f"y must be a number, not {type(y).__name__}")
         # Alltid lagra som float för konsekvent datatyp
         self.x = float(x)
