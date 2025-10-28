@@ -8,6 +8,8 @@
 # Python skapar automatiskt __le__, __gt__, __ge__ ifrån __eq__ + __lt__ med denna decorator
 # Följer DRY konceptet extra mycket tack vare denna decorator.
 from functools import total_ordering
+
+# importera 3D basklass
 from shape3d import Shape3D
 import math
 
