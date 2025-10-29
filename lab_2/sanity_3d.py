@@ -34,7 +34,7 @@ except TypeError:
 
 s1 = Sphere(0, 0, 0, 1)
 s2 = Sphere(2, 2, 2, 1)
-s3 = Sphere(0, 0, 0, 2)
+s3 = Sphere(3, 0, 0, 2)
 assert isclose(s1.surface_area, 4 * pi)
 assert isclose(s1.volume, 4 * pi / 3)
 assert s1 == s2  # likhet: radius, position ignoreras
