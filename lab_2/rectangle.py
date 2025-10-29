@@ -53,7 +53,7 @@ class Rectangle(Shape):
         self.width = float(width)
         self.height = float(height)
 
-    # @property decorator istället för att använda mig utav getter funktion för Shape3D
+    # @property decorator istället för att använda mig utav getter funktion för Shape
     # @property gör mina värden read-only
     # Följa DRY konceptet
     @property
@@ -61,7 +61,7 @@ class Rectangle(Shape):
         """Read only property. The area of the rectangle (width*height)."""
         return self.width * self.height
 
-    # @property decorator istället för att använda mig utav getter funktion för Shape3D
+    # @property decorator istället för att använda mig utav getter funktion för Shape
     # @property gör mina värden read-only
     # Följa DRY konceptet
     @property

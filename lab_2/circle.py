@@ -41,7 +41,7 @@ class Circle(Shape):
             raise ValueError("radius must be > 0")
         self.radius = float(radius)
 
-    # @property decorator istället för att använda mig utav getter funktion för Shape3D
+    # @property decorator istället för att använda mig utav getter funktion för Shape
     # @property gör mina värden read-only
     # Följa DRY konceptet
     @property
@@ -53,7 +53,7 @@ class Circle(Shape):
         """
         return math.pi * self.radius**2
 
-    # @property decorator istället för att använda mig utav getter funktion för Shape3D
+    # @property decorator istället för att använda mig utav getter funktion för Shape
     # @property gör mina värden read-only
     # Följa DRY konceptet
     @property
