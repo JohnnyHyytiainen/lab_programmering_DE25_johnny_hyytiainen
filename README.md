@@ -56,7 +56,9 @@ seq4 {'a':17, 't':12, 'c':15, 'g':20} (Others: 0)
 
 # Lab 2 – Geometry OOP (2D + bonus 3D)
 
-[![Lab 2 UML](lab_2/lab_2_uml.png)](lab_2/lab_2_uml.png)
+![Lab 2 UML](lab_2/lab_2_uml.png)
+
+
 
 
 Abstrakta basklasser för 2D/3D, arv till Circle/Rectangle och Sphere/Cube, 

@@ -53,8 +53,8 @@
  * Vägledning att fixa till en conftest.py i lab_2/tests folder för att få till allting med pytest.
 
 **Vägledning och förklaring om oop-plotting och hjälp med auto scaling och felhantering i plotter.py**
- * Stöd och förklaring kring _update_bounds + felhantering med RuntimeError + få till center -> hörn i plotten.
  * LLM(Claude sonnet 4.5)
+ * Stöd och förklaring kring _update_bounds + vägledning så att lab_2_plot.png hamnar i rätt mapp i lab_2 mappen.
 
 **Vägledning för omstrukturering av README.md + städning av repository enligt "best practice"**
  * LLM(ChatGPT 5 i Thinking mode)

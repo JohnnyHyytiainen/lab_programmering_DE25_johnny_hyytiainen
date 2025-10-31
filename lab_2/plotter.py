@@ -1,7 +1,7 @@
 # Kommentarer: Svenska
 # Kod: Engelska
 # plotter.py
-
+from pathlib import Path
 import os
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle as PCircle, Rectangle as PRect
@@ -9,9 +9,11 @@ from circle import Circle
 from rectangle import Rectangle
 
 
-def _ensure_png(path: str) -> str:
+def _ensure_png(path) -> str:
+    # Gör Path/str robust
+    path = str(path)
     root, ext = os.path.splitext(path)
-    return path if ext.lower() in (".png",) else path + ".png"
+    return path if ext.lower() == ".png" else path + ".png"
 
 
 class Shape2dPlotter:
@@ -24,7 +26,6 @@ class Shape2dPlotter:
         # bounds som växer jag ritar
         self.minx = self.miny = float("inf")
         self.maxx = self.maxy = float("-inf")
-        self._drawn = 0  # räkna hur många som faktiskt ritades
 
     def _update_bounds(self, x0, y0, x1, y1):
         self.minx = min(self.minx, x0)
@@ -43,18 +44,6 @@ class Shape2dPlotter:
             x0, y0 = shape.x - shape.radius, shape.y - shape.radius
             x1, y1 = shape.x + shape.radius, shape.y + shape.radius
             self._update_bounds(x0, y0, x1, y1)
-
-            # label utanför cirkel + cirkelns radie
-            off = shape.radius * 0.05
-            self.ax.text(
-                x1 + off,
-                y1 + off,
-                f"Circle R={shape.radius}",
-                ha="left",
-                va="bottom",
-                fontsize=6,
-            )
-            self._drawn += 1
             return
 
         if isinstance(shape, Rectangle):
@@ -63,43 +52,23 @@ class Shape2dPlotter:
             y0 = shape.y - shape.height / 2
             x1 = x0 + shape.width
             y1 = y0 + shape.height
-
             # patch + centerpunkt (blå)
             self.ax.add_patch(PRect((x0, y0), shape.width, shape.height, fill=False))
             self.ax.plot(shape.x, shape.y, "bo", markersize=3.5)
             self._update_bounds(x0, y0, x1, y1)
-            # label utanför rektangel med bredd x höjd
-            dx = 0.01 * max(self.maxx - self.minx, 1e-9)
-            dy = 0.01 * max(self.maxy - self.miny, 1e-9)
-            self.ax.text(
-                x1 + dx,
-                y1 + dy,
-                f"Rectangle(W x H) {shape.width:g}×{shape.height:g}",
-                ha="left",
-                va="bottom",
-                fontsize=6,
-            )
-            self._drawn += 1
             return
-
         # Hjälp om typerna inte matchar modulen
         raise TypeError(
             f"Stödjer ej {type(shape)}. " "import Circle/Rectangle från samma modul."
         )
 
-    def draw_many_and_save(self, shapes, filename="plots/lab_2_plot.png"):
+    def draw_many_and_save(self, shapes, filename=None):
         """Draw many, autoscale + save. Return filepath."""
         if not shapes:
             raise ValueError("Shapes får ej vara tomma")
 
         for s in shapes:
             self.draw(s)
-
-        if self._drawn == 0 or any(
-            v in (float("inf"), float("-inf"))
-            for v in (self.minx, self.miny, self.maxx, self.maxy)
-        ):
-            raise RuntimeError("Inga 2D-former ritades, kontrollera typer/importer.")
 
         # autoscale
         pad = 0.1 * max(self.maxx - self.minx, self.maxy - self.miny)
@@ -113,8 +82,12 @@ class Shape2dPlotter:
         self.ax.grid(True, linestyle="--", alpha=0.5)
         self.ax.spines[["top", "right"]].set_visible(False)
 
-        # spara
+        # filnamn: alltid lab_2/plots/lab_2_plot.png om inget anges
+        if filename is None:
+            filename = Path(__file__).resolve().parent / "plots" / "lab_2_plot.png"
         filename = _ensure_png(filename)
+
+        # skapa mapp och spara
         outdir = os.path.dirname(filename) or "."
         os.makedirs(outdir, exist_ok=True)
         self.fig.tight_layout()
@@ -124,18 +97,15 @@ class Shape2dPlotter:
         return abs_path
 
 
-def plot_shapes(shapes, filename="plots/lab_2_plot.png"):
+def plot_shapes(shapes, filename=None):
     return Shape2dPlotter().draw_many_and_save(shapes, filename)
 
 
 if __name__ == "__main__":
-    from circle import Circle
-    from rectangle import Rectangle
-
     shapes = [
         Circle(0, 0, 1),
         Rectangle(2.5, 0, 2, 1),
         Circle(-2, 1, 0.5),
     ]
-    out = plot_shapes(shapes, filename="plots/lab_2_plot")
+    out = plot_shapes(shapes)
     print("Plot sparad som lab_2_plot.png och finns i din:\n", out, "folder")
