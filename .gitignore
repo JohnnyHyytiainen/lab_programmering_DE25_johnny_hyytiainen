@@ -17,3 +17,7 @@ __pycache__/
 
 .DS_Store
 Thumbs.db
+
+lab_2/plots/*
+!lab_2/plots/lab_2_plot.png
+!lab_2/plots/.gitkeeppy

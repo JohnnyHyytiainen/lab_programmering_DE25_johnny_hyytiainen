@@ -49,6 +49,13 @@
 
 **Vägledning och hjälp för att utföra korrekt unit testing och göra om mina assert till ett fungerande unit-test med pytest**
  * LLM(ChatGPT 5 i Thinking mode)
+ * Hjälp med att få pytest att fungera (Som Kokchun nämnde i klassen. För invecklat med flera folders)
+ * Vägledning att fixa till en conftest.py i lab_2/tests folder för att få till allting med pytest.
+
+**Vägledning och förklaring om oop-plotting och hjälp med auto scaling och felhantering i plotter.py**
+ * Stöd och förklaring kring _update_bounds + felhantering med RuntimeError + få till center -> hörn i plotten.
+ * LLM(Claude sonnet 4.5)
 
 **Vägledning för omstrukturering av README.md + städning av repository enligt "best practice"**
  * LLM(ChatGPT 5 i Thinking mode)
+  * Uppdatering av README.md, genomgång för att hitta slarvfel och hjälp med struktur och vad som bör finnas med.
